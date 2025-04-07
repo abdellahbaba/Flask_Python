@@ -1,20 +1,29 @@
 from flask import Flask
+from flask import render_template
+from flask import json
 
-app = Flask(name)
+app = Flask(__name__)
 
-@app.route('/')
-def pyramide():
-    n = 5
-    output = []
-    for i in range(1, n + 1):
-        # Construction de chaque ligne
-        line = '&nbsp;' * (n - i)  # Espaces HTML
-        line += ''.join(map(str, range(1, i + 1)))
-        line += ''.join(map(str, range(i - 1, 0, -1)))
-        output.append(line + '<br>')
+@app.route('/<int:valeur>')
+def pyramide(valeur):
+    resultat = '<pre>'
+    
+    for i in range(1, valeur + 1):
+        # Créer la partie avant le sommet
+        gauche = ''.join(str(x) for x in range(1, i + 1))
+        # Créer la partie après le sommet
+        droite = ''.join(str(x) for x in range(i - 1, 0, -1))
+        
+        # Ajouter les espaces nécessaires pour centrer
+        espaces = ' ' * (valeur - i)
+        
+        # Combiner tout cela
+        resultat += espaces + gauche + droite + '\n'
+    
+    resultat += '</pre>'
+    return resultat
 
-    return '<pre>' + ''.join(output) + '</pre>'
-
-if name == 'main':
-    app.run()
+ 
+if __name__ == "__main__":
+    app.run(debug=True)
 
