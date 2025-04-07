@@ -1,14 +1,31 @@
-a = 0
-b = 1
+from flask import Flask, request
 
+app = Flask(name)
 
-n = int(input("Entrez le nombre de termes de la suite : "))
+@app.route('/')
+def formulaire():
+    return '''
+    <form action="/suite" method="get">
+        Entrez un nombre : <input type="number" name="valeur" min="2" required>
+        <input type="submit" value="Générer">
+    </form>
+    '''
 
-suite = []
+@app.route('/suite')
+def calcul_suite():
+    try:
+        n = int(request.args.get('valeur', 2))
+    except ValueError:
+        return "Veuillez entrer un nombre valide", 400
 
-for i in range(n):
-    suite.append(a)
-    a, b = b, a + b
+    if n < 2:
+        return "Le nombre doit être au moins 2", 400
 
+    suite = [0, 1]
+    for i in range(2, n):
+        suite.append(suite[-1] + suite[-2])
 
-print("Résultat :", ", ".join(map(str, suite)))
+    return f"Suite pour n={n} : {', '.join(map(str, suite))}"
+
+if name == 'main':
+    app.run(host='0.0.0.0', port=5000, debug=True)
