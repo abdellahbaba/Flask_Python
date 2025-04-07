@@ -16,3 +16,7 @@ def generer_pyramide(valeur):
 
 
 generer_pyramide(5)
+import sys
+
+print("Ceci est visible à l’écran uniquement", file=sys.stdout)
+
