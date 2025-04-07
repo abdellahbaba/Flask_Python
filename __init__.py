@@ -1,16 +1,18 @@
-from flask import Flask
-
-app = Flask(name)
-
-@app.route('/<int:valeur>')
-def exercice(valeur):
-    etoiles = ''
+def generer_pyramide(valeur):
     for i in range(1, valeur + 1):
-        etoiles += ' ' * (valeur + i) + '' i + '<br>'
-    return etoiles
+       
+        espaces = ' ' * (valeur - i)
+        
+      
+        gauche = ''.join(str(j) for j in range(1, i + 1))
+        
+    
+        droite = ''.join(str(j) for j in range(i - 1, 0, -1))
+        
 
-if name == "main":
-    app.run(debug=True)
+        ligne = espaces + gauche + droite
+        
+        print(ligne)
 
-if __name__ == "__main__":
-  app.run(debug=True)
+
+generer_pyramide(5)
