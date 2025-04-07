@@ -1,21 +1,19 @@
-def generer_pyramide(valeur):
-    for i in range(1, valeur + 1):
-       
-        espaces = ' ' * (valeur - i)
-        
-      
-        gauche = ''.join(str(j) for j in range(1, i + 1))
-        
-    
-        droite = ''.join(str(j) for j in range(i - 1, 0, -1))
-        
+from flask import Flask
 
-        ligne = espaces + gauche + droite
-        
-        print(ligne)
+app = Flask(name)
 
+@app.route('/')
+def pyramide():
+    n = 5
+    output = []
+    for i in range(1, n + 1):
+        # Construction de chaque ligne
+        line = '&nbsp;' * (n - i)  # Espaces HTML
+        line += ''.join(map(str, range(1, i + 1)))
+        line += ''.join(map(str, range(i - 1, 0, -1)))
+        output.append(line + '<br>')
 
-generer_pyramide(5)
-import sys
+    return '<pre>' + ''.join(output) + '</pre>'
 
-print("Ceci est visible à l’écran uniquement", file=sys.stdout)
+if name == 'main':
+    app.run()
