@@ -1,31 +1,29 @@
-from flask import Flask, request
+from flask import Flask
 
 app = Flask(name)
 
-@app.route('/')
-def formulaire():
-    return '''
-    <form action="/suite" method="get">
-        Entrez un nombre : <input type="number" name="valeur" min="2" required>
-        <input type="submit" value="Générer">
-    </form>
-    '''
+@app.route('/<int:n>')
+def calcul_somme_securise(n):
+    somme = 0
+    nombres_ajoutes = []
 
-@app.route('/suite')
-def calcul_suite():
-    try:
-        n = int(request.args.get('valeur', 2))
-    except ValueError:
-        return "Veuillez entrer un nombre valide", 400
+    for nombre in range(1, n + 1):
+        if nombre % 11 == 0:
+            continue
 
-    if n < 2:
-        return "Le nombre doit être au moins 2", 400
+        if nombre % 5 == 0 or nombre % 7 == 0:
+            # Vérifie si l'ajout dépasserait 5000
+            if somme + nombre > 5000:
+                break  # Arrêt avant dépassement
 
-    suite = [0, 1]
-    for i in range(2, n):
-        suite.append(suite[-1] + suite[-2])
+            somme += nombre
+            nombres_ajoutes.append(str(nombre))
 
-    return f"Suite pour n={n} : {', '.join(map(str, suite))}"
+    return (
+        f"Résultat pour n={n}<br><br>"
+        f"Nombres ajoutés: {', '.join(nombres_ajoutes)}<br><br>"
+        f"Somme finale: {somme} (garantie ≤ 5000)"
+    )
 
 if name == 'main':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0')
