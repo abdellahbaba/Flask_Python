@@ -16,5 +16,5 @@ def generer_pyramide(valeur):
 
 
 generer_pyramide(5)
-sys.__stdout__.write("Ceci s’affiche dans le terminal\n")
+
 
